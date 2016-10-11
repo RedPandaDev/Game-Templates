@@ -5,6 +5,7 @@ from player import *
 from items import *
 from gameparser import *
 from collections import defaultdict
+import time
 
 
 def list_of_items(items):
@@ -236,6 +237,19 @@ def execute_go(direction):
     moving). Otherwise, it prints "You cannot go there."
     """
     pass
+    global current_room
+    if  (is_valid_exit(current_room["exits"], direction) == True):
+    	print("You went to", exit_leads_to(current_room["exits"], direction) )
+    	
+    	input("Press Enter to continue...\n")
+    	next_room = move(current_room["exits"], direction)
+    	
+    	current_room = next_room
+    	return 
+
+    else:
+    	print("There's a wall there. Try a different direction.")
+    	return current_room
 
 
 def execute_take(item_id):
@@ -245,7 +259,13 @@ def execute_take(item_id):
     "You cannot take that."
     """
     pass
-    
+    global inventory
+    if (item_id in current_room["items"]):
+    	inventory.append(item_id)
+    	print(item_id, "now added to your inventory.")
+    else:
+    	print("I can't see", item_id ,"anywhere, are you sure that's correct?")
+
 
 def execute_drop(item_id):
     """This function takes an item_id as an argument and moves this item from the
@@ -333,7 +353,9 @@ def main():
     while True:
         # Display game status (room description, inventory etc.)
         print_room(current_room)
+        input("Press Enter to continue...\n")
         print_inventory_items(inventory)
+        input("Press Enter to continue...\n")
 
         # Show the menu with possible actions and ask the player
         command = menu(current_room["exits"], current_room["items"], inventory)
