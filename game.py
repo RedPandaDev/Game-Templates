@@ -239,7 +239,7 @@ def execute_go(direction):
     pass
     global current_room
     if  (is_valid_exit(current_room["exits"], direction) == True):
-    	print("You went to", exit_leads_to(current_room["exits"], direction) )
+    	print("\nYou went to", exit_leads_to(current_room["exits"], direction) )
     	
     	input("Press Enter to continue...\n")
     	next_room = move(current_room["exits"], direction)
@@ -248,7 +248,7 @@ def execute_go(direction):
     	return 
 
     else:
-    	print("There's a wall there. Try a different direction.")
+    	print("\nThere's a wall there. Try a different direction.")
     	return current_room
 
 
@@ -257,14 +257,22 @@ def execute_take(item_id):
     list of items in the current room to the player's inventory. However, if
     there is no such item in the room, this function prints
     "You cannot take that."
+
     """
     pass
     global inventory
-    if (item_id in current_room["items"]):
-    	inventory.append(item_id)
-    	print(item_id, "now added to your inventory.")
-    else:
-    	print("I can't see", item_id ,"anywhere, are you sure that's correct?")
+    for item in current_room["items"]:
+    	if item["id"] == item_id:
+    		inventory.append(item)
+    		current_room["items"].remove(item)
+    		print("\nYou added",item_id,"to your inventory.\n")
+    		input("Press Enter to continue...\n")
+    		return
+    
+    print("\nI can't see", item_id ,"anywhere, are you sure that's correct?\n")
+    input("Press Enter to continue...\n")
+
+
 
 
 def execute_drop(item_id):
@@ -273,7 +281,18 @@ def execute_drop(item_id):
     no such item in the inventory, this function prints "You cannot drop that."
     """
     pass
-    
+    global inventory
+    for item in inventory:
+    	if item['id'] == item_id:
+    		current_room["items"].append(item)
+    		inventory.remove(item)
+    		print("\nYou dropped " ,item_id+ ".\n")
+    		input("Press Enter to continue...\n")
+    		return
+
+    print("You don't have", item_id +", are you sure that's correct?\n")
+    input("Press Enter to continue...\n")
+   
 
 def execute_command(command):
     """This function takes a command (a list of words as returned by
