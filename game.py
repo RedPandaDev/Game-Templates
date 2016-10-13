@@ -257,7 +257,6 @@ def execute_take(item_id):
     list of items in the current room to the player's inventory. However, if
     there is no such item in the room, this function prints
     "You cannot take that."
-
     """
     pass
     global inventory
@@ -279,6 +278,9 @@ def execute_drop(item_id):
     """This function takes an item_id as an argument and moves this item from the
     player's inventory to list of items in the current room. However, if there is
     no such item in the inventory, this function prints "You cannot drop that."
+
+
+
     """
     pass
     global inventory
